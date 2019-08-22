@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 import MovieCard from "./MovieCard";
+import { NavLink } from "react-router-dom";
+
 export default class Movie extends React.Component {
   constructor(props) {
     super(props);
@@ -8,6 +10,14 @@ export default class Movie extends React.Component {
       movie: null
     };
   }
+
+  deleteMovie = id => {
+    // e.preventDefault();
+    axios.delete(`http://localhost:5000/api/movies/${id}`);
+    this.props.history.push("/");
+    //this routes the user back home once deleted
+    // dont need a .then or a .catch
+  };
 
   componentDidMount() {
     this.fetchMovie(this.props.match.params.id);
@@ -39,9 +49,20 @@ export default class Movie extends React.Component {
     return (
       <div className="save-wrapper">
         <MovieCard movie={this.state.movie} />
+        <button>
+          <NavLink to={`/update-movie/${this.state.movie.id}`}>
+            <button clasName="update-button">Update</button>
+          </NavLink>
+        </button>
         <div className="save-button" onClick={this.saveMovie}>
           Save
         </div>
+        <button
+          className="delete-button"
+          onClick={() => this.deleteMovie(this.state.movie.id)}
+        >
+          Delete
+        </button>
       </div>
     );
   }
