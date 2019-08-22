@@ -13,8 +13,11 @@ export default class Movie extends React.Component {
 
   deleteMovie = id => {
     // e.preventDefault();
-    axios.delete(`http://localhost:5000/api/movies/${id}`);
-    this.props.history.push("/");
+    axios
+      .delete(`http://localhost:5000/api/movies/${id}`)
+      .then(res => this.props.history.push("/"));
+    //you dont necessarily need a .then but this refreshes the page
+    // automatically when you delete things instead of fresheing it on your own
     //this routes the user back home once deleted
     // dont need a .then or a .catch
   };
